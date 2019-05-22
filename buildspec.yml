@@ -13,7 +13,7 @@ phases:
       - echo Building the Docker image...
       - echo $GIT_SHA $GIT_BRANCH
 #      - docker build --build-arg=GIT_SHA=$GIT_SHA --build-arg=GIT_BRANCH=$GIT_BRANCH build-arg=GIT_ID=$GIT_SHA --build-arg=GIT_AUTHOR_NAME="$ghprbActualCommitAuthor" --build-arg=GIT_AUTHOR_EMAIL=$ghprbActualCommitAuthorEmail --build-arg=GIT_COMMITTER_NAME=$ghprbPullAuthorLogin build-arg=GIT_COMMITTER_EMAIL=$ghprbActualCommitAuthorEmail --build-arg=GIT_MESSAGE="$GIT_COMMIT_MESSAGE" --build-arg=JENKINS_HOME=true --build-arg=CI_PULL_REQUEST=$ghprbPullId -t bharathnoddy/sample-nginx:$GIT_SHA .
-      - docker build  bharathnoddy/sample-nginx:latest .
+      - docker build  -t bharathnoddy/sample-nginx:latest .
   post_build:
     commands:
       - echo Build completed on `date`
