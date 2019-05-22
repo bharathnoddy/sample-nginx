@@ -11,7 +11,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t bharathnoddy/sample-nginx:$GIT_SHA .
+      - docker build -t bharathnoddy/sample-nginx:1 .
 
  post_build:
     commands:
