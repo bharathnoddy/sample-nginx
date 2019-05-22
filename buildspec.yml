@@ -9,5 +9,5 @@ phases:
       - echo Logging in to Amazon ECR...
       - docker login -u "bharathnoddy" -p "Btbh@j85"
       - cat Dockerfile
-      - docker build  -t bharathnoddy/sample-nginx:latest .
+      - docker build  -t sample-nginx:latest .
       - docker push bharathnoddy/sample-nginx:latest
