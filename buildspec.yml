@@ -7,10 +7,9 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - docker login -u bharathnoddy -p Btbh@j85
+      - $(aws ecr get-login --no-include-email --region us-west-1)
       - export GIT_SHA="`git rev-parse HEAD`"
       - export GIT_COMMIT_MESSAGE="`git --no-pager log -1 --pretty=format:%s`"
-      - echo $GIT_SHA $GIT_COMMIT_MESSAGE
   build:
     commands:
       - echo Build started on `date`
