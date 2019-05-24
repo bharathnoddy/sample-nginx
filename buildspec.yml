@@ -7,4 +7,23 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - docker build -t test .
+      - docker login -u bharathnoddy -p Btbh@j85
+      - export GIT_SHA="`git rev-parse HEAD`"
+      - export GIT_COMMIT_MESSAGE="`git --no-pager log -1 --pretty=format:%s`"
+      - echo $GIT_SHA $GIT_COMMIT_MESSAGE
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build --build-arg=GIT_SHA=$GIT_SHA --build-arg=GIT_BRANCH=$GIT_BRANCH --build-arg=GIT_ID=$GIT_SHA --build-arg=GIT_AUTHOR_NAME="$ghprbActualCommitAuthor"  --build-arg=GIT_AUTHOR_EMAIL=$ghprbActualCommitAuthorEmail --build-arg=GIT_COMMITTER_NAME=$ghprbPullAuthorLogin  --build-arg=GIT_COMMITTER_EMAIL=$ghprbActualCommitAuthorEmail --build-arg=GIT_MESSAGE="$GIT_COMMIT_MESSAGE" --build-arg=JENKINS_HOME=true --build-arg=CI_PULL_REQUEST=$ghprbPullId  -t smiledirect/vulcan:$GIT_SHA .
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker tag smiledirect/vulcan:$GIT_SHA 866893681515.dkr.ecr.us-west-1.amazonaws.com/smiledirect/vulcan:$GIT_SHA
+      - docker tag smiledirect/vulcan:$GIT_SHA 866893681515.dkr.ecr.us-west-1.amazonaws.com/smiledirect/vulcan:vulcan-$GIT_SHA
+      - docker push 866893681515.dkr.ecr.us-west-1.amazonaws.com/smiledirect/vulcan:$GIT_SHA
+      - docker push 866893681515.dkr.ecr.us-west-1.amazonaws.com/smiledirect/vulcan:vulcan-$GIT_SHA
+      - echo "Build and push completed"
+      - echo "Triggering downstream"
